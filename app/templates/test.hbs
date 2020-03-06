@@ -1,0 +1,68 @@
+<div>
+  <Input
+    id="boolUseChangeset"
+    @type="checkbox"
+    @checked={{this.useChangeset}}
+  />
+  <label for="boolUseChangeset">Use changeset?</label>
+</div>
+
+{{#let (if this.useChangeset (changeset @model skip-validation=true) @model) as |dummy|}}
+  <table border="1" width="400px">
+    <caption>{{dummy.constructor.name}}</caption>
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Foo</th>
+        <th scope="col">Bar</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">
+          Value
+        </th>
+        <td>
+          <Input
+            @type="checkbox"
+            @checked={{dummy.foo}}
+          />
+        </td>
+        <td>
+          <Input
+            @type="checkbox"
+            @checked={{dummy.bar}}
+          />
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Did Update?<br />
+        </th>
+        <td {{did-update (action (mut this.fooDidUpdate) true) dummy.foo}}>
+          <Input
+            @type="checkbox"
+            @checked={{this.fooDidUpdate}}
+          />
+        </td>
+        <td {{did-update (action (mut this.barDidUpdate) true) dummy.bar}}>
+          <Input
+            @type="checkbox"
+            @checked={{this.barDidUpdate}}
+          />
+        </td>
+        <td>
+          <a
+            href="#"
+            {{on 'click' (action (mut this.fooDidUpdate) false)}}
+            {{on 'click' (action (mut this.barDidUpdate) false)}}
+          >
+            (clear)
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{{/let}}
